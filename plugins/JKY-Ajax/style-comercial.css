@@ -1,0 +1,45 @@
+/* Prevenir Copy / Paste */
+body{-webkit-user-select: none !important;-moz-user-select: -moz-none !important;-ms-user-select: none !important;user-select: none !important;}
+/* Admin Bar */
+li#wp-admin-bar-wp-logo,li#wp-admin-bar-comments,li#wp-admin-bar-new-content,li#wp-admin-bar-updates,li#wp-admin-bar-site-name,ul#wp-admin-bar-top-secondary{display: none !important;}
+#wpadminbar li#wp-admin-bar-admin-bar-ver-ventas>.ab-item:before{content: "\f535";}
+#wpadminbar li#wp-admin-bar-admin-bar-panel-ventas>.ab-item:before{content: "\f115";}
+#wpadminbar li#wp-admin-bar-admin-bar-nueva-venta>.ab-item:before{content: "\f132";}
+li#wp-admin-bar-admin-bar-ver-ventas, li#wp-admin-bar-admin-bar-panel-ventas, li#wp-admin-bar-admin-bar-nueva-venta{display: block !important;padding-left:10px !important;}
+li#wp-admin-bar-admin-bar-ver-ventas a:before, li#wp-admin-bar-admin-bar-panel-ventas a:before, li#wp-admin-bar-admin-bar-nueva-venta a:before{top: 13px;left: -5px;}
+/* Perfil */
+.empresas-colaboradoras-create-user, div#application-passwords-section{display: none !important;}
+/* Editando en Gutenberg: Queremos adminbar */
+.edit-post-layout{margin-top: 32px;}
+div#wpadminbar{display: block !important;}
+/* Menú lateral y Ayuda / Opciones de pantalla*/
+li#menu-posts-venta{display: none !important;}
+/* Footer */
+div#wpfooter{display: none !important;}
+/* Tabla ventas (wp-admin */
+ul.subsubsub span.count{display: none;}
+/* Edición rápida */
+fieldset.inline-edit-col-left,fieldset.inline-edit-col-right{display: none;}
+fieldset.inline-edit-col-center.inline-edit-categories, .inline-edit-col{width: 100% !important;display: flex;padding: 15px 0px !important;}
+/* Ventana edición ventas */
+.components-dropdown.components-dropdown-menu.interface-more-menu-dropdown,
+.components-dropdown.components-dropdown-menu.block-editor-post-preview__dropdown,
+button.components-button.editor-post-switch-to-draft,
+.components-panel__header.interface-complementary-area-header ul,
+.components-panel__body.edit-post-post-status h2,
+.components-panel__body.edit-post-post-status .components-panel__row.edit-post-post-visibility,
+.components-panel__body.edit-post-post-status .components-panel__row.edit-post-post-schedule,
+.components-panel__body.edit-post-post-status .components-panel__row.edit-post-post-author,
+.edit-post-header-toolbar__left,
+.is-root-container.is-focus-mode.block-editor-block-list__layout,
+.components-panel__body > h2+ label,
+.components-panel__body input[type=search],
+.is-root-container.block-editor-block-list__layout,
+.components-panel .components-panel__body:nth-child(2)
+{display: none !important;}
+
+@media (min-width: 768px)
+{
+	body.is-fullscreen-mode .edit-post-layout .editor-post-publish-panel{top: 32px;}
+	li#wp-admin-bar-admin-bar-ver-ventas a:before, li#wp-admin-bar-admin-bar-panel-ventas a:before, li#wp-admin-bar-admin-bar-nueva-venta a:before{top: 2px;left: 0px}
+}
