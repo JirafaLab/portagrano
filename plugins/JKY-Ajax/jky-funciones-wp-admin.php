@@ -150,7 +150,7 @@ function add_toolbar_items($admin_bar)
         'title' => $txt,
         'href'  => $url,
         'meta'  => array('title' => $txt)));
-    if(in_array(userEsAdmin()[2]), ['administrator','editor_de_variedades'], true){
+    if(userEsAdmin()[0]) {
 	$txt = 'Registrar Variedad';
     $admin_bar->add_menu( array(
         'id'    => 'admin-bar-nueva-venta',

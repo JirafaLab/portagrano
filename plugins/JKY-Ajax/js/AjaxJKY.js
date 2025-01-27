@@ -25,7 +25,6 @@ function lanzaSnackBaryRedirecciona(tipo, mensaje, url)
 	}, 3000);
 }
 function cambiaDisable(elemento, valor) {
-	console.log("Cambio disable: " + elemento + " : " + valor);
 	jQuery(elemento).prop('disabled', valor);
 }
 function reseteaSelect2(idelemento,valor)
@@ -38,7 +37,6 @@ function reseteaSelect2(idelemento,valor)
 function reseteaBusqueda(form_selector) {
     // Determinar el formulario objetivo
     let form_objetivo = form_selector != "" ? form_selector : 'form-filtros-variedades';
-    
     // Resetear selects
     reseteaSelect2('select-especie', 0);
     reseteaSelect2('select-empresa', 0);
@@ -136,9 +134,9 @@ jQuery(document).ready(function()
 {
 	jQuery('.posible-select2').select2({width: 'resolve',placeholder: "Elige una opción"});
 	// jQuery(".select-familia").on("select2:open", function(){jQuery(".select2-search__field").focus();});
-	cambiaDisable("#clasificacion2", true);
-	cambiaDisable("#clasificacion3", true);
-	cambiaDisable("#clasificacion4", true);
+	cambiaDisable(".fila-todos-filtros-aplicados #clasificacion2", true);
+	cambiaDisable(".fila-todos-filtros-aplicados #clasificacion3", true);
+	cambiaDisable(".fila-todos-filtros-aplicados #clasificacion4", true);
 	
 	jQuery('#slider-empresas').slick({
 		arrows:			true,
