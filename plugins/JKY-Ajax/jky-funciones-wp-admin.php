@@ -150,15 +150,16 @@ function add_toolbar_items($admin_bar)
         'title' => $txt,
         'href'  => $url,
         'meta'  => array('title' => $txt)));
-    if(userEsAdmin()[0]) {
-	$txt = 'Registrar Variedad';
-    $admin_bar->add_menu( array(
+    $roles = userEsAdmin();
+	if (isset($roles[2]) && in_array($roles[2], ['administrator', 'editor_de_variedades'])) {
+		$txt = 'Registrar Variedad';
+    	$admin_bar->add_menu( array(
         'id'    => 'admin-bar-nueva-venta',
         'title' => $txt,
         'href'  => get_home_url()."/crear-editar-variedad/?id_variedad=0",
         'meta'  => array('title' => $txt)));
 	}
-	if(userEsAdmin()[0] == true) {
+	if (isset($roles[2]) && in_array($roles[2], ['administrator', 'editor_de_variedades'])) {
 		if(is_page(258)) // Crear editar variedad
 		{
 			$idventa = empty($_GET['id_variedad'])? "0" : $_GET['id_variedad'];
