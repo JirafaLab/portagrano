@@ -1,5 +1,8 @@
-li#menu-posts, 
+#wpadminbar li#wp-admin-bar-admin-bar-nueva-venta>.ab-item:before, #wpadminbar li#wp-admin-bar-admin-bar-ver-ventas>.ab-item:before {
+    top: 3px !important;
+}
+
 li#toplevel_page_delete_all_actions,
 li#toplevel_page_wpcf7 {
-    display: none;
+    display: none !important;
 }

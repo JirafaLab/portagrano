@@ -280,27 +280,17 @@ function jky_semilla_frontend_funcion($id = 0)
 								$terminos = empty($terminos)? 0 : $terminos;
 								$valorp = $valorh = $valorn = $valornn = 0;
 								$padrep = $padreh = $padren = $padrenn = 0;
-								if(!empty($terminos))
-								{
-									if($terminos[0] != null)
-									{
-										$valorp = $terminos[0];
-										$padreh = $terminos[0];
-										if($terminos[1] != null)
-										{
-											$valorh = $terminos[1];
-											$padren = $terminos[1];
-											if($terminos[2] != null)
-											{
-												$valorn = $terminos[2];
-												$padrenn = $terminos[2];
-												if($terminos[3] != null)
-												{
-													$valornn = $terminos[3];
-												}
-											}
-										}
-									}
+								if (!empty($terminos)) {
+									$valorp = $terminos[0] ?? null;
+									$padreh = $valorp;
+								
+									$valorh = $terminos[1] ?? null;
+									$padren = $valorh;
+								
+									$valorn = $terminos[2] ?? null;
+									$padrenn = $valorn;
+								
+									$valornn = $terminos[3] ?? null;
 								}
 							echo '<div id="caja-selects-especies">';
 								echo pintaSemillaSelectEspecie('especie', $padrep, $valorp,'especie[]', 'clasificacion1');

@@ -137,70 +137,98 @@ function remove_dashboard_widgets()
 }
 add_action('wp_dashboard_setup', 'remove_dashboard_widgets' );
 
-/* menu Bar */
-add_action('admin_bar_menu', 'add_toolbar_items', 100);
-function add_toolbar_items($admin_bar)
-{
-	$objeto = get_queried_object();
-	$url = dameEnlaceVerVentas();
-	
-	$txt = 'Buscador de Variedades';
-	$admin_bar->add_menu(array(
+/* menu Bar 
+
+
+*/
+function helperToolBarAddBuscador($admin_bar) {
+    $txt = 'Buscador de Variedades';
+    $url = dameEnlaceVerVentas(); // Asegúrate de definir esta función
+    $admin_bar->add_menu(array(
         'id'    => 'admin-bar-ver-ventas',
         'title' => $txt,
         'href'  => $url,
-        'meta'  => array('title' => $txt)));
-	$user_data = userEsAdmin(); // Obtienes los datos del usuario
-	if ($user_data && array_intersect($user_data[2], ['administrator', 'editor_de_variedades'])) {
-		$txt = 'Registrar Variedad';
-    	$admin_bar->add_menu( array(
+        'meta'  => array('title' => $txt)
+    ));
+}
+
+function helperToolBarAddRegistrarVariedad($admin_bar) {
+    $txt = 'Registrar Variedad';
+    $admin_bar->add_menu(array(
         'id'    => 'admin-bar-nueva-venta',
         'title' => $txt,
-        'href'  => get_home_url()."/crear-editar-variedad/?id_variedad=0",
-        'meta'  => array('title' => $txt)));
-	}
-	if ($user_data && array_intersect($user_data[2], ['administrator', 'editor_de_variedades'])) {
-		if(is_page(258)) // Crear editar variedad
-		{
-			$idventa = empty($_GET['id_variedad'])? "0" : $_GET['id_variedad'];
-			if($idventa != "0")
-			{
-				
-				$admin_bar->add_menu( array(
-					'id'    => 'admin-bar-editar-semilla',
-					'title' => 'Editar en Wordpress',
-					'href'  => get_home_url()."/wp-admin/post.php?post=$idventa&action=edit",
-					'meta'  => array('title' => "Editar en Wordpress")));
-				
-				$url = get_permalink($idventa);
-				$admin_bar->add_menu( array(
-					'id'    => 'admin-bar-ver-semilla',
-					'title' => 'Ver como visitante',
-					'href'  => $url,
-					'meta'  => array('title' => "Ver como visitante")));
+        'href'  => get_home_url() . "/crear-editar-variedad/?id_variedad=0",
+        'meta'  => array('title' => $txt)
+    ));
+}
+
+function helperToolBarAddEditarEnWordpress($admin_bar, $idventa) {
+    $txt = 'Editar en Wordpress';
+    $admin_bar->add_menu(array(
+        'id'    => 'admin-bar-editar-semilla-wordpress',
+        'title' => $txt,
+        'href'  => get_home_url() . "/wp-admin/post.php?post=$idventa&action=edit",
+        'meta'  => array('title' => $txt)
+    ));
+}
+
+function helperToolBarAddVerComoVisitante($admin_bar, $idventa) {
+    $txt = 'Ver como visitante';
+    $url = get_permalink($idventa);
+    $admin_bar->add_menu(array(
+        'id'    => 'admin-bar-ver-semilla',
+        'title' => $txt,
+        'href'  => $url,
+        'meta'  => array('title' => $txt)
+    ));
+}
+
+function helperToolBarAddEditarVariedad($admin_bar) {
+    $idventa = get_the_ID();
+    $txt = "Editar variedad";
+    $admin_bar->add_menu(array(
+        'id'    => 'admin-bar-editar-semilla',
+        'title' => $txt,
+        'href'  => get_home_url() . "/crear-editar-variedad/?id_variedad=$idventa",
+        'meta'  => array('title' => $txt)
+    ));
+}
+
+add_action('admin_bar_menu', 'manage_toolbar_roles', 100);
+function manage_toolbar_roles($admin_bar) {
+    $objeto = get_queried_object();
+    $user_data = userEsAdmin();
+
+    helperToolBarAddBuscador($admin_bar);
+    if (!empty($user_data) && isset($user_data[2]) && is_array($user_data[2])) {
+        if (in_array('editor_de_variedades', $user_data[2]) || in_array('suscriptor', $user_data[2]) || in_array('redactor', $user_data[2])) {
+			// Eliminar nodos comunes
+			$admin_bar->remove_node('wp-logo');         // Eliminar el logo de WordPress
+			$admin_bar->remove_node('dashboard');       // Eliminar enlace al Escritorio
+			$admin_bar->remove_node('comments');        // Eliminar "Comentarios"
+			$admin_bar->remove_node('wpcf7');           // Eliminar Contact Form 7
+			$admin_bar->remove_node('wpseo-menu');      // Eliminar Yoast SEO
+		
+			// Eliminar "Entrada" solo si no es un redactor
+			if (!in_array('redactor', $user_data[2])) {
+				$admin_bar->remove_node('new-content');
 			}
 		}
-		else
-		{
-			if($objeto->post_type == "variedad")
-			{
-				$idventa = get_the_ID();
-				$txt = "Editar variedad";
-				$admin_bar->add_menu( array(
-					'id'    => 'admin-bar-editar-semilla',
-					'title' => $txt,
-					'href'  => get_home_url()."/crear-editar-variedad/?id_variedad=$idventa",
-					'meta'  => array('title' => $txt)));
-				$txt = "Editar en Wordpress";
-				$admin_bar->add_menu( array(
-					'id'    => 'admin-bar-editar-semilla-wordpress',
-					'title' => $txt,
-					'href'  => get_home_url()."/wp-admin/post.php?post=$idventa&action=edit",
-					'meta'  => array('title' => $txt)));
-			}		
+		if (array_intersect($user_data[2], ['administrator', 'editor_de_variedades'])) {
+			helperToolBarAddRegistrarVariedad($admin_bar);
+			$idventa = isset($_GET['id_variedad']) ? $_GET['id_variedad'] : "0";
+			if (is_page(258) && $idventa != "0") {
+				helperToolBarAddVerComoVisitante($admin_bar, $idventa);
+			} else if (is_object($objeto) && isset($objeto->post_type) && $objeto->post_type == "variedad") {
+				helperToolBarAddEditarVariedad($admin_bar);
+			}
+			if (array_intersect($user_data[2], ['administrator'])) {
+				helperToolBarAddEditarEnWordpress($admin_bar, $idventa);
+			}
 		}
 	}
 }
+
 
 function dameEnlaceVerVentas()
 {
@@ -329,46 +357,18 @@ function filter_enfermedades_by_especies( $post_type, $which ) {
 
 }
 
-// Función para ocultar elementos del menú
 function ocultar_menu_para_roles() {
     // Verificar si el usuario es administrador
-    if (!userEsAdmin()[0]) { // Llama a la función userEsAdmin una vez
-        // Obtener el rol del usuario
-        $user = wp_get_current_user();
-        $user_roles = $user->roles;
-
-        // Ocultar elementos para Redactores y Suscriptores
-        if (in_array('redactor', $user_roles) || in_array('suscriptor', $user_roles)) {
-            remove_menu_page('edit-comments.php'); // Eliminar la página de comentarios del menú
-            remove_menu_page('wpcf7');  // Eliminar la página de Contact Form 7 del menú
-        }
-    }
+    $user_data = userEsAdmin();
+	if ($user_data && array_intersect($user_data[2], ['editor_de_variedades', 'redactor', 'suscriptor'])) {
+    	remove_menu_page('edit-comments.php'); // Eliminar la página de Comentarios
+		remove_menu_page('wpcf7');  // Eliminar Contact Form 7
+		remove_menu_page('tools.php'); // Eliminar Herramientas
+		remove_menu_page('wp-bulk-delete/wp-bulk-delete.php'); // Eliminar WP Bulk Delete
+		remove_menu_page('profile.php');
+	}
 }
-
-// Función para ocultar elementos de la barra de administración
-function ocultar_barra_para_roles($wp_admin_bar) {
-    // Verificar si el usuario es administrador
-    if (!userEsAdmin()[0]) { // Llama a la función userEsAdmin una vez
-        // Obtener el rol del usuario
-        $user = wp_get_current_user();
-        $user_roles = $user->roles;
-
-        // Ocultar elementos de la barra de administración para Redactores y Suscriptores
-        if (in_array('redactor', $user_roles) || in_array('suscriptor', $user_roles)) {
-            $wp_admin_bar->remove_node('comments');  // Eliminar el ítem "Comentarios"
-            $wp_admin_bar->remove_node('wpcf7');  // Eliminar el nodo de Contact Form 7
-            $wp_admin_bar->remove_node('wp-logo');  // Eliminar el ícono de WordPress
-            $wp_admin_bar->remove_node('wpseo-menu');  // Eliminar el icono de Yoast SEO
-
-        }
-    }
-}
-
-// Ejecutar la función en el hook admin_menu para ocultar elementos del menú
-add_action('admin_menu', 'ocultar_menu_para_roles', 99);
-
-// Ejecutar la función en el hook admin_bar_menu para ocultar elementos de la barra de administración
-add_action('admin_bar_menu', 'ocultar_barra_para_roles', 999);
+add_action('admin_menu', 'ocultar_menu_para_roles');
 
 
 ?>

@@ -41,9 +41,15 @@ function agregar_estilos_personalizados_admin()
     // Condicion: si procede
     // if(Es admin pero no es Juanky)
 	$user_data = userEsAdmin(); // Obtienes los datos del usuario
-	if ($user_data && array_intersect($user_data[2], ['editor_de_variedades'])) {
+	$version = '1.0.1';
+	if ($user_data && array_intersect($user_data[2], ['editor_de_variedades', 'redactor', 'suscriptor'])) {
 		$ruta_css = APFSURL . '/style-admin.css';
-    	wp_enqueue_style('jky-funciones-wp-admin', $ruta_css, array(), '1.0.1');
+		wp_enqueue_style('jky-funciones-wp-admin', $ruta_css, array(), $version);
+		if ($user_data && array_intersect($user_data[2], ['editor_de_variedades'])) {
+			$ruta_css = APFSURL . '/style-admin-editor-variedades.css';
+			wp_enqueue_style('jky-funciones-wp-admin', $ruta_css, array(), $version);
+		}
+    	
 	}
 }
 add_action('admin_enqueue_scripts', 'agregar_estilos_personalizados_admin');

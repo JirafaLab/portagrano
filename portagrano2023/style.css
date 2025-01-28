@@ -1359,7 +1359,7 @@ li#wp-admin-bar-ninja-cloner span{top: 0px !important;}
 #wpadminbar li#wp-admin-bar-admin-bar-panel-ventas>.ab-item:before{content: "\f115";}
 #wpadminbar li#wp-admin-bar-admin-bar-nueva-venta>.ab-item:before{content: "\f132";}
 li#wp-admin-bar-admin-bar-ver-ventas, li#wp-admin-bar-admin-bar-panel-ventas, li#wp-admin-bar-admin-bar-nueva-venta{display: block !important;padding-left:10px !important;}
-li#wp-admin-bar-admin-bar-ver-ventas a:before, li#wp-admin-bar-admin-bar-panel-ventas a:before, li#wp-admin-bar-admin-bar-nueva-venta a:before{top: 13px;left: -5px;}
+li#wp-admin-bar-admin-bar-ver-ventas a:before, li#wp-admin-bar-admin-bar-panel-ventas a:before, li#wp-admin-bar-admin-bar-nueva-venta a:before{top: 3px;left: 0px;}
 /* Enlaces / Botones */
 a.intangible{color: inherit;text-decoration: inherit;cursor: pointer;}
 	a.intangible:hover{text-decoration: none;color: inherit;}

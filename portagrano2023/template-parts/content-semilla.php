@@ -35,22 +35,30 @@ if(!empty($terminos[0]))
 				// echo "<a class ='enlace-clasificacion termino-1' href='$termino_enlace'>$termino_nombre</a>";
 				echo "<a class ='enlace-clasificacion-test termino-1' href='$termino_enlace'>$termino_nombre</a>&nbsp;/&nbsp;";
 				
-				if($terminos[1] != null)
-				{
-					$termino = $terminos[1];
-					$termino_nombre = get_term_field( 'name', $termino );
-					$termino_enlace = get_term_link( $termino, $taxonomia);
-					// echo "<a class ='enlace-clasificacion termino-2' href='$termino_enlace'>$termino_nombre</a>";
-					echo "<a class ='enlace-clasificacion-test termino-2' href='$termino_enlace'>$termino_nombre</a>&nbsp;/&nbsp;";
-					if($terminos[2] != null)
-					{
-						$termino = $terminos[2];						
-						$termino_nombre = get_term_field( 'name', $termino );
-						$termino_enlace = get_term_link( $termino, $taxonomia);
-						// echo "<a class ='enlace-clasificacion termino-3' href='$termino_enlace'>$termino_nombre</a>";
-						echo "<a class ='enlace-clasificacion-test termino-3' href='$termino_enlace'>$termino_nombre</a>&nbsp;/&nbsp;";
+				for ($i = 1; $i <= 2; $i++) {
+					if (!empty($terminos[$i])) {
+						$termino = $terminos[$i];
+						$termino_nombre = get_term_field('name', $termino);
+						$termino_enlace = get_term_link($termino, $taxonomia);
+						echo "<a class='enlace-clasificacion-test termino-$i' href='$termino_enlace'>$termino_nombre</a>&nbsp;/&nbsp;";
 					}
 				}
+				// if($terminos[1] != null)
+				// {
+				// 	$termino = $terminos[1];
+				// 	$termino_nombre = get_term_field( 'name', $termino );
+				// 	$termino_enlace = get_term_link( $termino, $taxonomia);
+				// 	// echo "<a class ='enlace-clasificacion termino-2' href='$termino_enlace'>$termino_nombre</a>";
+				// 	echo "<a class ='enlace-clasificacion-test termino-2' href='$termino_enlace'>$termino_nombre</a>&nbsp;/&nbsp;";
+				// 	if($terminos[2] != null)
+				// 	{
+				// 		$termino = $terminos[2];						
+				// 		$termino_nombre = get_term_field( 'name', $termino );
+				// 		$termino_enlace = get_term_link( $termino, $taxonomia);
+				// 		// echo "<a class ='enlace-clasificacion termino-3' href='$termino_enlace'>$termino_nombre</a>";
+				// 		echo "<a class ='enlace-clasificacion-test termino-3' href='$termino_enlace'>$termino_nombre</a>&nbsp;/&nbsp;";
+				// 	}
+				// }
 			}
 			the_title( '<h1 class="fuente-tipo-mp fuente-size-18 fuente-estilo-bold">', '</h1>' ); 
 		?>
