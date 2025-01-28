@@ -1012,7 +1012,7 @@ body{font-family: "avenir";color: var(--color-4);}
 /* JKY Security */
 h1.mensaje-puerta{background: #f4b2b2;text-align: center;height: 100vh;align-items: center;display: flex;justify-content: center;margin: 0;}
 /* Comunes */
-.jky-display-flex{display: flex !important;align-items: center;justify-content: space-between;flex-direction: row;flex-wrap: wrap;width: 100%;align-items: flex-start;}
+.jky-display-flex{display: flex !important;align-items: center;justify-content: flex-start;flex-direction: row;flex-wrap: wrap;width: 100%;align-items: flex-start;}
 .jky-display-flex.display-columna{flex-direction: column;}
 .jky-display-flex.elementos-espaciados{justify-content: space-between;align-items: center;}
 /* CheckBox Nice */
@@ -1485,7 +1485,14 @@ a.enlace-enfermedad {
     text-decoration: underline !important;
     cursor: pointer;
 }
-.modal.fade .modal-dialog{-webkit-transform: translate(0,20%);transform: translate(0,20%);max-width: 90%;}
+.modal.fade .modal-dialog{-webkit-transform: translate(0,20%);transform: translate(0,20%)}
+.variedad-fotografía img{cursor: pointer;}
+#ver-imagen .modal-dialog {
+    -webkit-transform: translate(0, 5%);
+    transform: translate(0, 5%);
+    max-width: max-content;
+    text-align: center;
+}
 h5#ver-enfermedad-label{font-weight: bolder;color: black;font-size: 20px;}
 span.enfermedad-dato{display: block;color: var(--color-2);font-weight: bold;}
 span.enfermedad-dato span{display: inline-block;color: var(--color-1);font-weight: normal;}
@@ -1595,18 +1602,10 @@ span.venta-etiqueta.cliente.empresa {
     align-items: start;
 }
 
-.cabecera.titulo-variedad {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
+.cabecera.titulo-variedad h1 {
+    display: inline-block;
 }
-.cabecera.titulo-variedad {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-}
+
 .cabecera.titulo-variedad a.enlace-clasificacion-test{
 	
 }

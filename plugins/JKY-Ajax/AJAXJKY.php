@@ -40,8 +40,11 @@ function agregar_estilos_personalizados_admin()
 {
     // Condicion: si procede
     // if(Es admin pero no es Juanky)
-    $ruta_css = APFSURL . '/style-admin.css';
-    wp_enqueue_style('jky-funciones-wp-admin', $ruta_css, array(), '1.0.0');
+	$user_data = userEsAdmin(); // Obtienes los datos del usuario
+	if ($user_data && array_intersect($user_data[2], ['editor_de_variedades'])) {
+		$ruta_css = APFSURL . '/style-admin.css';
+    	wp_enqueue_style('jky-funciones-wp-admin', $ruta_css, array(), '1.0.1');
+	}
 }
 add_action('admin_enqueue_scripts', 'agregar_estilos_personalizados_admin');
 
@@ -164,7 +167,6 @@ add_action('wp_ajax_nopriv_dameDatosVentaPHPvistaCard','dameDatosVentaPHPvistaCa
 add_action('wp_ajax_dameDatosVentaPHPvistaCard','dameDatosVentaPHPvistaCard');
 function dameDatosVentaPHPvistaCard($id = 0, $enlace_especie = "")
 {
-	$usuario_actual_capaz = userEsAdmin();
 	$devolver = "";
 	// fechas
 	$fecha_a		= formateaFechaBDtoPHP(get_post_meta($id,'fecha_alta',true));
@@ -286,14 +288,8 @@ function dameDatosVentaPHPvistaCard($id = 0, $enlace_especie = "")
 					// $cadena .= "&nbsp;";
 				}
 			}
-			/*
-			$devolver .= "<span class = 'venta-etiqueta cliente empresa'>";
-				$devolver .= "<span>Empresa</span>: ";
-				$devolver .= $cadena;
-			$devolver .= "</span>";
-			*/
-			if($usuario_actual_capaz[0] == true)
-			{
+			$user_data = userEsAdmin(); // Obtienes los datos del usuario
+			if ($user_data && array_intersect($user_data[2], ['administrator', 'editor_de_variedades'])) {
 				$devolver .= "<div class = 'venta-acciones'>";
 					// $url	= get_permalink($id);
 					$url = get_home_url()."/crear-editar-variedad/?id_variedad=$id";
@@ -657,7 +653,7 @@ add_filter( 'getarchives_where', function ( $where, $parsed_args ) {
 
 function restringir_acceso_paginas_usurios_noadmin() {
     // Definimos un array con los slugs o IDs de las páginas que queremos restringir
-    $paginas_restringidas = array('test', 'crear-editar-variedad'); // Slugs o IDs de las páginas
+    $paginas_restringidas = array('test'); // Slugs o IDs de las páginas
 
     // Verificamos si estamos en alguna de las páginas dentro del array
     if (is_page($paginas_restringidas)) {

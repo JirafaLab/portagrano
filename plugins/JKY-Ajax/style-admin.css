@@ -1,7 +1,5 @@
-/* Ajustar tamaño de las columnas del CPT "Enfermedades" */
-/*
-.column-codigo{width: 10%;}
-.column-nombre_cientifico{width: 20%;}
-.column-nombre_ingles{width: 20%;}
-*/
-.column-descripcion{width: 45%;}
+li#menu-posts, 
+li#toplevel_page_delete_all_actions,
+li#toplevel_page_wpcf7 {
+    display: none;
+}
