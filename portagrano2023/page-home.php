@@ -131,7 +131,6 @@ while($query_noticias->have_posts() )
 	$noticias_mostradas[] = $id;
 	$titulo = get_the_title();
 	$fecha	= get_the_date("d F Y");
-	$texto	= get_the_excerpt();
 	$imagen	= get_the_post_thumbnail($id,'full');
 	$enlace	= get_the_permalink();
 	$enlace_title = 'title="Ver noticia: '.$titulo.' - Portagrano.es"';
@@ -142,7 +141,11 @@ while($query_noticias->have_posts() )
 			$devolver .= '<div class="foto-noticia">'.'<a class="intangible" href="'.$enlace.'" '.$enlace_title.'>'.$imagen.'</a>'.'</div>';
 			$devolver .= '<div class="fecha-noticia">'.$fecha.'</div>';
 			$devolver .= '<div class="titular-noticia">'.'<h3><a class="intangible" href="'.$enlace.'" '.$enlace_title.'>'.$titulo.'</a></h3>'.'</div>';
-			$devolver .= '<div class="texto-noticia">'.$texto.'</div>';
+			$devolver .= '<div class="texto-noticia">';
+				$content = wp_strip_all_tags(get_the_content());
+				$content = strip_shortcodes($content);
+				$devolver .= wp_trim_words($content, 30, ' [...]');
+			$devolver .= '</div>';
 			$devolver .= $html_a;
 		$devolver .= '</div>';	
 	$devolver .= '</div> <!-- col-mitad -->';
@@ -235,14 +238,17 @@ while($query_noticias->have_posts() )
 	$noticias_mostradas[] = $id;
 	$titulo = get_the_title();
 	$fecha	= get_the_date("d F Y");
-	$texto	= get_the_excerpt();
 	$enlace	= get_the_permalink();
 	$enlace_title = 'title="Ver noticia: '.$titulo.' - Portagrano.es"';
 	
 	$devolver .= '<div class="columna col-mitad">';
 		$devolver .= '<div class="caja-noticia a-pares orden-'.$contador.'">';
 			$devolver .= '<div class="titular-noticia">'.'<h3><a class="intangible" href="'.$enlace.'" '.$enlace_title.'>'.$titulo.'</a></h3>'.'</div>';
-			//$devolver .= '<div class="texto-noticia">'.$texto.'</div>';
+			$devolver .= '<div class="texto-noticia">';
+			$content = wp_strip_all_tags(get_the_content());
+			$content = strip_shortcodes($content);
+			$devolver .= wp_trim_words($content, 30, ' [...]');
+			$devolver .= '</div>';
 			$devolver .= '<div class="fecha-noticia">'.$fecha.'</div>';
 		$devolver .= '</div>';	
 	$devolver .= '</div> <!-- col-mitad -->';

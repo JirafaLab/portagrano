@@ -176,11 +176,11 @@ if(!empty($terminos[0]))
 				<!-- <h2 class='titulo-tipo-2'>Fotografía</h2> -->
 				<div>
 					<?php 
-						$thumbnail_html = get_the_post_thumbnail(get_the_ID(), 'thumbnail');
+						$thumbnail_html = get_the_post_thumbnail(get_the_ID(), 'full');
 						if ($thumbnail_html) {
+							// Agregar el atributo onclick manualmente
 							echo str_replace('<img', '<img onclick="dameImagenAmpliada(this)" ', $thumbnail_html);
 						}
-
 						$imagen_extra = get_field('imagen_2');
 						if(!empty($imagen_extra))
 						{

@@ -24,154 +24,139 @@ function jky_sf_enqueuescripts()
 }
 add_action('wp_enqueue_scripts', 'jky_sf_enqueuescripts');
 
-// Crea el CPT al activar el plugin.
-/* CPTs y TAXonomias */
-function jky_sf_custom_cpt()
-{
-//	add_theme_support( 'post-thumbnails' );
-	/*
-	* Post Type: Ventas
-	*/
-	$labels = array(
-		"name" => __( "Variedades", "" ),
-		"singular_name" => __( "Variedad", "" ),
-		'search_items'          => __( 'Buscar variedad', '' ),
-		'edit_item'             => __( 'Editar variedad', '' ),
-		'add_new_item'          => __( 'Añadir nueva variedad', '' )
-	);
-	$args = array(
-		"label" => __( "variedades", "" ),
-		"labels" => $labels,
-		"description" => "",
-		"public" => true,
-		"publicly_queryable" => true,
-		"show_ui" => true,
-		"rest_base" => "",
-		"has_archive" => false,
-		"show_in_menu" => true,
-		'show_in_rest' => true, // Needed for tax to appear in Gutenberg editor
-		"exclude_from_search" => false,
-		"capability_type" => "semilla",
-		"map_meta_cap" => true,
-		"hierarchical" => true,
-		"rewrite" => array( "slug" => "variedad", "with_front" => true ),
-		"query_var" => true,
-		"menu_position" => 4,
-		"menu_icon" => "dashicons-palmtree",
-		'supports' => array( 'title', 'editor', 'thumbnail')
-	);
-	register_post_type( "variedad", $args );
-		/*
-	* Post Type: Enfermedades
-	*/
-	$labels = array(
-		"name" => __( "Enfermedades", "" ),
-		"singular_name" => __( "Enfermedad", "" ),
-		'search_items'          => __( 'Buscar enfermedad', '' ),
-		'edit_item'             => __( 'Editar enfermedad', '' ),
-		'add_new_item'          => __( 'Añadir nueva enfermedad', '' )
-	);
-	$args = array(
-		"label" => __( "Enfermedades", "" ),
-		"labels" => $labels,
-		"description" => "",
-		"public" => true,
-		"publicly_queryable" => true,
-		"show_ui" => true,
-		"rest_base" => "",
-		"has_archive" => false,
-		"show_in_menu" => true,
-		'show_in_rest' => true, // Needed for tax to appear in Gutenberg editor
-		"exclude_from_search" => false,
-		"capability_type" => "enfermedad",
-		"map_meta_cap" => true,
-		"hierarchical" => true,
-		"rewrite" => array( "slug" => "enfermedad", "with_front" => true ),
-		"query_var" => true,
-		"menu_position" => 4,
-		"menu_icon" => "dashicons-warning",
-		"supports" => array("title","editor", "slug"),
-	);
-	register_post_type( "enfermedad", $args );
+/* CPTs y Taxonomías con capacidades personalizadas */
+function jky_sf_custom_cpt() {
+    $cpts = [
+        'variedad' => [
+            'name' => __( 'Variedades', '' ),
+            'singular_name' => __( 'Variedad', '' ),
+            'menu_icon' => 'dashicons-palmtree',
+            'capability_type' => 'variedad',
+            'rewrite_slug' => 'variedad',
+            'supports' => [ 'title', 'editor', 'thumbnail' ],
+        ],
+        'enfermedad' => [
+            'name' => __( 'Enfermedades', '' ),
+            'singular_name' => __( 'Enfermedad', '' ),
+            'menu_icon' => 'dashicons-warning',
+            'capability_type' => 'enfermedad',
+            'rewrite_slug' => 'enfermedad',
+            'supports' => [ 'title', 'editor', 'slug' ],
+        ],
+    ];
+
+    foreach ( $cpts as $slug => $cpt ) {
+        $labels = [
+            'name' => $cpt['name'],
+            'singular_name' => $cpt['singular_name'],
+            'search_items' => sprintf( __( 'Buscar %s', '' ), strtolower( $cpt['singular_name'] ) ),
+            'edit_item' => sprintf( __( 'Editar %s', '' ), strtolower( $cpt['singular_name'] ) ),
+            'add_new_item' => sprintf( __( 'Añadir nueva %s', '' ), strtolower( $cpt['singular_name'] ) ),
+        ];
+
+        $args = [
+            'label' => $cpt['name'],
+            'labels' => $labels,
+            'public' => true,
+            'publicly_queryable' => true,
+            'show_ui' => true,
+            'show_in_rest' => true,
+            'has_archive' => false,
+            'exclude_from_search' => false,
+            'hierarchical' => true,
+            'rewrite' => [ 'slug' => $cpt['rewrite_slug'], 'with_front' => true ],
+            'query_var' => true,
+            'menu_position' => 4,
+            'menu_icon' => $cpt['menu_icon'],
+            'capability_type' => $cpt['capability_type'],
+            'map_meta_cap' => true,
+            'supports' => $cpt['supports'],
+        ];
+
+        register_post_type( $slug, $args );
+    }
 }
-add_action('init','jky_sf_custom_cpt');
-/*
-Creación de Taxonomias
-*/
-function jky_vf_custom_tax() 
-{
-	/**
-	* Taxonomy: Especie
-	*/
-	$labels = array(
-		"name" => __( "Especies", "" ),
-		"singular_name" => __( "Especie", "" ),
-	);
-	$args = array(
-		"label" => __( "Especie", "" ),
-		"labels" => $labels,
-		"public" => true,
-		"hierarchical" => true,
-		"label" => "Especie",
-		"show_ui" => true,
-		"show_in_menu" => true,
-		"show_in_nav_menus" => true,
-		"query_var" => true,
-		"rewrite" => array( 'slug' => 'especie', 'with_front' => true, ),
-		"show_admin_column" => true,
-		"show_in_rest" => true,
-		"rest_base" => "",
-		"show_in_quick_edit" => true,
-	);
-	register_taxonomy( "especie", array("variedad","enfermedad"), $args );	
-	/**
-	* Taxonomy: Características de semilla
-	*/
-	$labels = array(
-		"name" => __( "Características", "" ),
-		"singular_name" => __( "Característica", "" ),
-	);
-	$args = array(
-		"label" => __( "Característica", "" ),
-		"labels" => $labels,
-		"public" => true,
-		"hierarchical" => true,
-		"label" => "Característica",
-		"show_ui" => true,
-		"show_in_menu" => true,
-		"show_in_nav_menus" => true,
-		"query_var" => true,
-		"rewrite" => array( 'slug' => 'caracteristica', 'with_front' => true, ),
-		"show_admin_column" => true,
-		"show_in_rest" => true,
-		"rest_base" => "",
-		"show_in_quick_edit" => true,
-	);
-	register_taxonomy( "caracteristica", array("variedad"), $args );
-	
-	$labels = array(
-		"name" => __( "Empresas de Semillas", "" ),
-		"singular_name" => __( "Empresa", "" ),
-	);
-	$args = array(
-		"label" => __( "Empresa", "" ),
-		"labels" => $labels,
-		"public" => true,
-		"hierarchical" => true,
-		"label" => "Empresas",
-		"show_ui" => true,
-		"show_in_menu" => true,
-		"show_in_nav_menus" => true,
-		"query_var" => true,
-		"rewrite" => array( 'slug' => 'empresa', 'with_front' => true, ),
-		"show_admin_column" => true,
-		"show_in_rest" => true,
-		"rest_base" => "",
-		"show_in_quick_edit" => true,
-	);
-	register_taxonomy( "empresa", array("variedad"), $args );
+add_action( 'init', 'jky_sf_custom_cpt' );
+
+function jky_vf_custom_tax() {
+    $taxonomies = [
+        'especie' => [
+            'name' => __( 'Especies', '' ),
+            'singular_name' => __( 'Especie', '' ),
+            'post_types' => [ 'variedad', 'enfermedad' ],
+            'rewrite_slug' => 'especie',
+            'capabilities' => [
+                'manage_terms' => 'manage_especies',
+                'edit_terms' => 'edit_especies',
+                'delete_terms' => 'delete_especies',
+                'assign_terms' => 'assign_especies',
+            ],
+        ],
+        'caracteristica' => [
+            'name' => __( 'Características', '' ),
+            'singular_name' => __( 'Característica', '' ),
+            'post_types' => [ 'variedad' ],
+            'rewrite_slug' => 'caracteristica',
+            'capabilities' => [
+                'manage_terms' => 'manage_caracteristicas',
+                'edit_terms' => 'edit_caracteristicas',
+                'delete_terms' => 'delete_caracteristicas',
+                'assign_terms' => 'assign_caracteristicas',
+            ],
+        ],
+        'empresa' => [
+            'name' => __( 'Empresas de Semillas', '' ),
+            'singular_name' => __( 'Empresa', '' ),
+            'post_types' => [ 'variedad' ],
+            'rewrite_slug' => 'empresa',
+            'capabilities' => [
+                'manage_terms' => 'manage_empresas',
+                'edit_terms' => 'edit_empresas',
+                'delete_terms' => 'delete_empresas',
+                'assign_terms' => 'assign_empresas',
+            ],
+        ],
+    ];
+
+    foreach ( $taxonomies as $slug => $taxonomy ) {
+        $labels = [
+            'name' => $taxonomy['name'],
+            'singular_name' => $taxonomy['singular_name'],
+        ];
+
+        $args = [
+            'label' => $taxonomy['name'],
+            'labels' => $labels,
+            'public' => true,
+            'hierarchical' => true,
+            'show_ui' => true,
+            'show_in_menu' => true,
+            'show_in_nav_menus' => true,
+            'query_var' => true,
+            'rewrite' => [ 'slug' => $taxonomy['rewrite_slug'], 'with_front' => true ],
+            'show_admin_column' => true,
+            'show_in_rest' => true,
+            'rest_base' => '',
+            'show_in_quick_edit' => true,
+            'capabilities' => $taxonomy['capabilities'],
+        ];
+
+        register_taxonomy( $slug, $taxonomy['post_types'], $args );
+    }
 }
-add_action('init','jky_vf_custom_tax');
+add_action( 'init', 'jky_vf_custom_tax' );
+
+// Registrar capacidades personalizadas para Members
+add_filter( 'members_get_capabilities', function( $caps ) {
+    return array_merge( $caps, [
+        // Capacidades de taxonomías
+        'manage_especies', 'edit_especies', 'delete_especies', 'assign_especies',
+        'manage_caracteristicas', 'edit_caracteristicas', 'delete_caracteristicas', 'assign_caracteristicas',
+        'manage_empresas', 'edit_empresas', 'delete_empresas', 'assign_empresas',
+    ]);
+});
+
+
 
 
 /* reordenar un Array */
