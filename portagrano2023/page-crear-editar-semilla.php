@@ -5,8 +5,8 @@
 
 get_header();
 
-if(!userEsAdmin([0]))
-	wp_redirect(home_url());
+$user_data = userEsAdmin(); // Obtienes los datos del usuario
+if ($user_data && array_intersect($user_data[2], ['administrator', 'editor_de_variedades'])) {
 ?>
 	<main id="primary" class="site-main">
 		<div class="container con-orejas">
@@ -24,5 +24,10 @@ if(!userEsAdmin([0]))
 		</div>
 	</main><!-- #main -->
 <?php
+}
+else
+{
+	wp_redirect(home_url());
+}
 get_sidebar();
 get_footer();

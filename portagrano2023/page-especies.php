@@ -36,15 +36,19 @@ get_header();
 	    'hide_empty' 	=> false,
 	    'parent' 		=> 0 // Obtener solo los términos principales
 	));
-	foreach ( $terms as $term ) {
+	foreach ( $terms as $term )
+	{
 		// var_dump($term);
 	    $id 			= $term->term_id;
 	    $nombre			= $term->name;
 	    $enlace			= get_term_link($id, 'especie');
 	    $imagen_especie = "";
-	    if (get_field('imagen_especie', $term)) {
+	    if (get_field('imagen_especie', $term))
+	    {
+			// Obtiene la URL de la imagen asociada al término
 			$imagen_especie = get_field('imagen_especie', $term)['url'];
 		}
+	    
 		echo "<a class='intangible especie-az' href='$enlace'>";
 			echo "<div class='especie-capa-new' style = 'background-image: url($imagen_especie)'>";
 				echo "<h4>$nombre</h4>";
@@ -57,12 +61,12 @@ get_header();
 					<?php 
 						// $bannerfijo = dameArrayBanners('fijo-1',1);
 						// pintaAnuncio($bannerfijo, 0);
-						$bannerfijo = dameArrayBanners('fijo-vademecum',-1);
+						$bannerfijo = dameArrayBanners('fijo-2',1);
 						pintaAnuncio($bannerfijo, 0);
-						// $bannerfijo = dameArrayBanners('fijo-3',1);
-						// pintaAnuncio($bannerfijo, 0);
-						// $bannerfijo = dameArrayBanners('fijo-4',1);
-						// pintaAnuncio($bannerfijo, 0);
+						$bannerfijo = dameArrayBanners('fijo-3',1);
+						pintaAnuncio($bannerfijo, 0);
+						$bannerfijo = dameArrayBanners('fijo-4',1);
+						pintaAnuncio($bannerfijo, 0);
 					?>
 				</div>
 			</div><!-- .jky-display-flex.seccion-ultimas-noticias.contenido -->

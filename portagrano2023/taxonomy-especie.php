@@ -375,6 +375,12 @@ get_header();
 					<?php 
 						$bannerfijo = dameArrayBanners('fijo-1',1);
 						pintaAnuncio($bannerfijo, 0);
+						/*
+						while($indicebanners < count($banners))
+						{
+							$indicebanners = pintaAnuncio($banners, $indicebanners);
+						}
+						*/
 						$bannerfijo = dameArrayBanners('fijo-2',1);
 						pintaAnuncio($bannerfijo, 0);
 						$bannerfijo = dameArrayBanners('fijo-3',1);
